@@ -1,0 +1,9 @@
+Options -Indexes
+RewriteEngine On
+
+# Nếu không phải là tệp hoặc thư mục có thật (như file ảnh, css)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Chuyển toàn bộ nội dung sau dấu / vào biến "url" trong index.php
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
