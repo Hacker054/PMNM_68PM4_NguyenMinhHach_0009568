@@ -1,15 +1,16 @@
 <?php
-class sinhvien {
-public function index() {
-        echo "Day la danh sach sinh vien";
-        // trả về view
-        require_once '../app/views/sinhvien/index.php';
-}
+require_once '../app/models/sinhvienModel.php';
+require_once '../app/core/Controller.php';
+class sinhvien extends Controller {
+    public function index() {
+        $sinhvienModel = $this->model('sinhvienModel');
+        $sinhvien = $sinhvienModel->getALLSinhVien();
 
-public function create() {
-        echo "Day la trang tao moi sinh vien";
+        $this->view("sinhvien/index", ["sinhvien" => $sinhvien, "title" => "Danh sach sinh vien"]);
+    }
+    public function create() {
         // trả về view
         require_once '../app/views/sinhvien/create.php';
-}
+    }
 }
 ?>
