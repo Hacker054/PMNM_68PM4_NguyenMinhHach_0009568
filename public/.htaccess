@@ -1,9 +1,11 @@
 Options -Indexes
-RewriteEngine On
 
-# Nếu không phải là tệp hoặc thư mục có thật (như file ảnh, css)
+#Đảm bảo rằng yêu cầu không phải là một
+RewriteCond %(REQUEST_FILENAME) !-f
+RewriteCond %(REQUEST_FILENAME) !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Chuyển toàn bộ nội dung sau dấu / vào biến "url" trong index.php
-RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+#Điều hướng tất cả các yêu cầu tới index
+RewriteRule ^ index.php [L,QSA]
+RewriteRule ^(.*)$ index.php?url=$1
