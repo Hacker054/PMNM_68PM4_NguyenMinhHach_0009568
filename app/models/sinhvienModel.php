@@ -11,7 +11,7 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-         public function create($hoten, $gioitinh, $mssv) {
+        public function create($hoten, $gioitinh, $mssv) {
             $query = "INSERT INTO tbl_sinhvien (sinhvien, giotinh, mssv) VALUES (:hoten, :gioitinh, :mssv)";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':hoten', $hoten);
@@ -22,6 +22,28 @@
             } else {
                 return false;
             }
+        }
+
+        public function paging($limit, $offset, $search = '') {
+            // đếm tổng số bản ghi
+            $sqlCount = "SELECT COUNT(*) as total FROM tbl_sinhvien";
+            $stmtCount = $this->conn->prepare($sqlCount);
+            $stmtCount->execute();
+            $totalRecord = $stmtCount->fetchColumn();
+            $totalRecord = ceil($totalRecord / $limit);
+
+
+            $sql = "SELECT * FROM tbl_sinhvien LIMIT :limit OFFSET :offset";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return [
+                'sinhviens' => $result,
+                'totalpage' => $totalRecord
+            ];
         }
     }
 ?>

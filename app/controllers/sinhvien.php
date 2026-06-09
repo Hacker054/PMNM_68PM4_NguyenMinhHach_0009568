@@ -2,18 +2,34 @@
 require_once '../app/models/sinhvienModel.php';
 require_once '../app/core/Controller.php';
 class sinhvien extends Controller {
-    public function index() {
-        $sinhvienModel = $this->model('sinhvienModel');
-        $sinhvien = $sinhvienModel->getALLSinhVien();
+    public function index($page = 1) {
+        // lấy dữ liệu phân trang từ model
+        $currentpage = max(1, (int)$page);
+        $limit = 3;
+        $offset = ($currentpage - 1) * $limit;
 
-        $this->view("layout/masterlayout", ["viewname" => "sinhvien/index","sinhvien" => $sinhvien, "title" => "Danh sach sinh vien"]);
+
+        $sinhvienModel = $this->model('sinhvienModel');
+        // $sinhvien = $sinhvienModel->getALLSinhVien();
+
+        $result = $sinhvienModel->paging($limit, $offset);
+        $sinhviens = $result['sinhviens'];
+        $totalpage = $result['totalpage'];
+        $this->view("layout/masterlayout", 
+        [
+            "viewname" => "sinhvien/index",
+            "sinhvien" => $sinhviens, 
+            "title" => "Danh sach sinh vien", 
+            "currentpage" => $currentpage, 
+            "totalpage" => $totalpage
+        ]);
     }
+    
     public function create() {
         // trả về view
         require_once '../app/views/sinhvien/create.php';
-        
     }
-     public function store(){
+    public function store(){
         $hoten = $_POST['hoten'];
         $gioitinh = $_POST['gioitinh'];
         $mssv = $_POST['mssv'];
