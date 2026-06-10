@@ -63,5 +63,11 @@
             $stmt->bindParam(':mssv', $mssv);
             return $stmt->execute();
         }
+         public function delete($id) {
+            $query = "DELETE FROM tbl_sinhvien WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        }
     }
 ?>
