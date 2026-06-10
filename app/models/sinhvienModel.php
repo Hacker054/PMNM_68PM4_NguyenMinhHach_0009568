@@ -45,5 +45,23 @@
                 'totalpage' => $totalRecord
             ];
         }
+
+        public function getById($id) {
+            $query = "SELECT * FROM tbl_sinhvien WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        public function update($id, $hoten, $gioitinh, $mssv) {
+            $query = "UPDATE tbl_sinhvien SET sinhvien = :hoten, giotinh = :gioitinh, mssv = :mssv WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':hoten', $hoten);
+            $stmt->bindParam(':gioitinh', $gioitinh);
+            $stmt->bindParam(':mssv', $mssv);
+            return $stmt->execute();
+        }
     }
 ?>
